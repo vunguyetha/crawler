@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+    <link crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css"
+          integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" rel="stylesheet">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.14.0-beta2/css/bootstrap-select.min.css"
+          integrity="sha512-mR/b5Y7FRsKqrYZou7uysnOdCIJib/7r5QeJMFvLNHNhtye3xJp1TdJVPLtetkukFn227nKpXD9OjUc09lx97Q=="
+          crossorigin="anonymous"
+          referrerpolicy="no-referrer"/>
+</head>
+<body>
+<div th:replace="~{common/nav :: nav-bar}"></div>
+<div class="container">
+    <div class="m-auto border border-3 bg-secondary rounded-3">
+        <h2 align="center" class="mt-4 text-light">Search Item</h2>
+        <div class="border border-3 bg-light rounded-3 m-4">
+            <form class="p-4 m-auto"  th:action="@{/search/result}" th:object="${product}" method="post" role="form">
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-addon1">Name</span>
+                    <input class="form-control"
+                           th:field="*{name}"
+                           type="text"
+                           aria-label="name"
+                           aria-describedby="basic-addon1"
+                           placeholder="Nhập sản phẩm tìm kiếm: Balo, sạc, laptop, pin, giá đỡ..."
+                           required="required">
+                </div>
+
+                <div class="input-group mb-3">
+                    <label class="input-group-text">Budget Range</label>
+                    <input class="form-control"
+                           th:field="*{minBudget}"
+                           type="number"
+                           aria-label="minBudget"
+                           placeholder="min">
+                    <span class="input-group-text">-</span>
+                    <input class="form-control"
+                           th:field="*{maxBudget}"
+                           type="number"
+                           placeholder="max"
+                           aria-label="minBudget">
+                    <span class="input-group-text">VND</span>
+                    <p th:errors="*{minBudget}" class="text-danger" th:if="${#fields.hasErrors('minBudget')}">
+                </div>
+
+                <div class="input-group mb-3">
+                    <div class="input-group-text">Brands</div>
+                    <select th:field="*{brands}"
+                            class="selectpicker form-select"
+                            multiple
+                            data-live-search="true">
+                        <option th:each="brand : ${brands}" th:value="${brand.id}" th:text="${brand.name}"></option>
+                    </select>
+                </div>
+
+                <div class="d-flex justify-content-end pt-3">
+                    <button class="btn btn-secondary btn-lg" type="submit">Search</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.14.0-beta2/js/bootstrap-select.min.js"
+        integrity="sha512-FHZVRMUW9FsXobt+ONiix6Z0tIkxvQfxtCSirkKc5Sb4TKHmqq1dZa8DphF0XqKb3ldLu/wgMa8mT6uXiLlRlw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+</body>
+</html>
