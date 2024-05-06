@@ -169,7 +169,9 @@ public class ProductService {
 
     public List<ProductViewDto> findPageProductsBySearchForm(ProductSearchRequest product) {
         List<String> brandIds = product.getBrands().stream().map(Brand::getId).toList();
-        List<Product> products = productRepository.findProductsByNameAndPriceAndBrandIds(product.getName(), product.getMinBudget(), product.getMaxBudget(), brandIds);
+        List<Product> products;
+        if (brandIds.size() == 0) products = productRepository.findProductsByNameAndPrice(product.getName(), product.getMinBudget(), product.getMaxBudget());
+        else products = productRepository.findProductsByNameAndPriceAndBrandIds(product.getName(), product.getMinBudget(), product.getMaxBudget(), brandIds);
         return products.stream()
                 .map(ProductViewDto::new)
                 .toList();
