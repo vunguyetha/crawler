@@ -6,6 +6,20 @@
     <title>Results</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: Arial, sans-serif;
+            color: #495057;
+        }
+
+        .container {
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+            padding: 20px;
+        }
+
         .table td {
             white-space: nowrap;
             overflow: hidden;
@@ -13,26 +27,101 @@
             max-width: 200px;
             font-size: 14px;
         }
+
+        .pagination {
+            margin-top: 20px;
+        }
+
+        .pagination .page-link {
+            color: #6c757d;
+            border-color: #dee2e6;
+        }
+
+        .pagination .page-item.active .page-link {
+            background-color: #ffc107;
+            border-color: #ffc107;
+            color: #212529;
+        }
+
+        .pagination .page-link:hover {
+            background-color: #e0a800;
+            border-color: #e0a800;
+            color: #ffffff;
+        }
+
+        .search-form-button {
+            text-align: right;
+            margin-top: 20px;
+        }
+
+        .search-info {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .container-info {
+            max-width: 800px;
+            margin: auto;
+            padding-top: 20px;
+        }
+
+        .btn-primary {
+            background-color: #ffc107;
+            border-color: #ffc107;
+            color: #212529;
+        }
+
+        .btn-primary:hover {
+            background-color: #e0a800;
+            border-color: #e0a800;
+            color: #ffffff;
+        }
+
+        .no-products-message {
+            display: none;
+        }
     </style>
 </head>
 <body>
-<div th:replace="~{common/nav :: nav-bar}"></div>
+<div class="container container-info mt-2">
+    <h4 class="mb-2">Search Information</h4>
+    <div class="search-info">
+        <div>
+            <span class="fw-bold">Key:</span>
+            <span th:text="${key.name}"></span>
+        </div>
+        <div>
+            <span class="fw-bold">Budget:</span>
+            <span th:text="${key.minBudget}"></span>
+            <span class="fw-bold">-</span>
+            <span th:text="${key.maxBudget}"></span>
+        </div>
+        <div>
+            <span class="fw-bold">List brands:</span>
+            <span id="brandNames"></span>
+        </div>
+    </div>
+    <div class="search-form-button">
+        <a th:href="@{/search/form}" class="btn btn-primary">Back to Search Form</a>
+    </div>
+</div>
 <div class="container">
-    <h1 class="mt-5 mb-3">Product Table</h1>
+    <h4 class="mb-3">Search Results</h4>
+    <div class="no-products-message container-fluid text-danger row pt-3">
+        No products were found that match the search information you provided. Please try again...
+    </div>
     <table class="table table-striped">
         <thead>
         <tr>
             <th>ID</th>
             <th>Name</th>
             <th>Short URL</th>
-            <!--            <th>Original Price</th>-->
             <th>Price</th>
             <th>Rating Average</th>
-            <!--            <th>Short Description</th>-->
             <th>Quantity Sold</th>
-            <!--            <th>Thumbnail URL</th>-->
             <th>Inventory Type</th>
-            <!--            <th>Category</th>-->
             <th>Brand</th>
             <th>Seller</th>
         </tr>
@@ -51,6 +140,31 @@
     const itemsPerPage = 10;
     let currentPage = 1;
 
+    const key = [[${key}]];
+    const brands = key.brands;
+    const brandNamesSpan = document.getElementById('brandNames');
+    if (brands.length === 0) {
+        brandNamesSpan.innerText = 'all';
+    } else {
+        const brandNames = brands.map(brand => brand.name);
+        brandNamesSpan.innerText = brandNames.join(', ');
+    }
+
+    function showOrHideTable() {
+        const table = document.querySelector('.table');
+        const noProductsMessage = document.querySelector('.no-products-message');
+        const nav = document.querySelector('nav');
+        if (products.length === 0) {
+            table.style.display = 'none';
+            noProductsMessage.style.display = 'block';
+            nav.style.display = 'none';
+        } else {
+            table.style.display = 'table';
+            noProductsMessage.style.display = 'none';
+            nav.style.display = 'block';
+        }
+    }
+
     function showPage(page) {
         const startIndex = (page - 1) * itemsPerPage;
         const endIndex = startIndex + itemsPerPage;
@@ -63,14 +177,10 @@
                     <td>${product.id}</td>
                     <td>${product.name}</td>
                     <td>${product.shortUrl}</td>
-                    <!--<td>${product.originalPrice}</td>-->
                     <td>${product.price}</td>
                     <td>${product.ratingAverage}</td>
-                   <!--<td>${product.shortDescription}</td>-->
                     <td>${product.quantitySold}</td>
-                    <!--<td>${product.thumbnailUrl}</td>-->
                     <td>${product.inventoryType}</td>
-                    <!--<td>${product.category}</td>-->
                     <td>${product.brand}</td>
                     <td>${product.seller}</td>
                 </tr>
@@ -167,6 +277,7 @@
         return li;
     }
 
+    showOrHideTable();
     showPage(currentPage);
     renderPagination();
 </script>

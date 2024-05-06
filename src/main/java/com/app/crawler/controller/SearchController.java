@@ -42,13 +42,15 @@ public class SearchController {
         List<Brand> brands = brandService.findAllByOrderByNameAsc();
         model.addAttribute("brands", brands);
 
-        return "home";
+        return "searchForm";
     }
 
     @PostMapping("/result")
     public String search(@Valid @ModelAttribute("product") ProductSearchRequest product,
                          BindingResult result,
                          Model model) {
+        List<Brand> brands = brandService.findAllByOrderByNameAsc();
+        model.addAttribute("brands", brands);
         if (product.getMinBudget() == null) product.setMinBudget(MIN_BUDGET);
         if (product.getMaxBudget() == null) product.setMaxBudget(MAX_BUDGET);
         else if (product.getMaxBudget() < product.getMinBudget()) {
@@ -58,11 +60,12 @@ public class SearchController {
 
         if (result.hasErrors()) {
             model.addAttribute("product", product);
-            return "home";
+            return "searchForm";
         }
 
         List<ProductViewDto> results = productService.findPageProductsBySearchForm(product);
         model.addAttribute("products", results);
+        model.addAttribute("key", product);
 
         return "searchResult";
     }
