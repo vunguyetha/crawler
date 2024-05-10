@@ -86,7 +86,7 @@
 </head>
 <body>
 <div class="container container-info mt-2">
-    <h4 class="mb-2">Search Information</h4>
+    <h4 class="mb-2 text-center">Search Information</h4>
     <div class="search-info">
         <div>
             <span class="fw-bold">Key:</span>
@@ -108,22 +108,22 @@
     </div>
 </div>
 <div class="container">
-    <h4 class="mb-3">Search Results</h4>
+    <h4 class="mb-3 text-center">Search Results</h4>
     <div class="no-products-message container-fluid text-danger row pt-3">
         No products were found that match the search information you provided. Please try again...
     </div>
     <table class="table table-striped">
         <thead>
         <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Short URL</th>
-            <th>Price</th>
-            <th>Rating Average</th>
-            <th>Quantity Sold</th>
-            <th>Inventory Type</th>
-            <th>Brand</th>
-            <th>Seller</th>
+            <th class="text-center">ID</th>
+            <th class="text-center">Name</th>
+            <th class="text-center">Short URL</th>
+            <th class="text-center">Price</th>
+            <th class="text-center">Rating Average</th>
+            <th class="text-center">Quantity Sold</th>
+            <th class="text-center">Inventory Type</th>
+            <th class="text-center">Brand</th>
+            <th class="text-center">Seller</th>
         </tr>
         </thead>
         <tbody id="tableBody">
@@ -174,14 +174,14 @@
         pageData.forEach(product => {
             tableBody.innerHTML += `
                 <tr>
-                    <td>${product.id}</td>
+                    <td class="text-center">${product.id}</td>
                     <td>${product.name}</td>
                     <td>${product.shortUrl}</td>
                     <td>${product.price}</td>
-                    <td>${product.ratingAverage}</td>
-                    <td>${product.quantitySold}</td>
-                    <td>${product.inventoryType}</td>
-                    <td>${product.brand}</td>
+                    <td class="text-center">${product.ratingAverage}</td>
+                    <td class="text-center">${product.quantitySold}</td>
+                    <td class="text-center">${product.inventoryType}</td>
+                    <td class="text-center">${product.brand}</td>
                     <td>${product.seller}</td>
                 </tr>
             `;
