@@ -7,8 +7,6 @@ import com.app.crawler.service.BrandService;
 import com.app.crawler.service.ProductService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -30,12 +28,7 @@ public class SearchController {
     private static final int MAX_BUDGET = 1000000000;
 
     @GetMapping("/form")
-    public String showSearchForm(@RequestParam(defaultValue = "1") final Integer pageNumber,
-                                 @RequestParam(defaultValue = "10") final Integer size,
-                                 Model model) {
-        Page<ProductViewDto> productViewDtos = productService.findAllByOrderByIdAsc(PageRequest.of(pageNumber, size));
-        model.addAttribute("products", productViewDtos);
-
+    public String showSearchForm(Model model) {
         ProductSearchRequest product = new ProductSearchRequest();
         model.addAttribute("product", product);
 
