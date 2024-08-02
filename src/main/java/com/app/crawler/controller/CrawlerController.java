@@ -4,7 +4,9 @@ import com.app.crawler.response.JobInfo;
 import com.app.crawler.service.LinkedinService;
 import com.app.crawler.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
@@ -29,7 +31,10 @@ public class CrawlerController {
     }
 
     @GetMapping("/start-crawl-with-linkedin")
-    public List<JobInfo> crawlFromLinkedin(@RequestParam(name = "keywords") String keywords) {
-        return linkedinService.startCrawlingFromLinkedIn(keywords);
+    public ModelAndView crawlFromLinkedin(@RequestParam(name = "keywords") String keywords) {
+        ModelAndView resultView = new ModelAndView("linkedinResult");
+        List<JobInfo> jobInfos = linkedinService.startCrawlingFromLinkedIn(keywords);
+        resultView.addObject("results", jobInfos);
+        return resultView;
     }
 }
